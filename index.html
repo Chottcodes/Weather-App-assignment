@@ -33,7 +33,7 @@
                 <h4>currently</h4>
               </div>
               <div class="txt-temp">
-                <h1>53°F</h1>
+                <h1 id="main-temp">53°F</h1>
               </div>
             </div>
             <div class="city-container">
@@ -44,9 +44,13 @@
       </div>
       <div class="right-side">
         <div class="input-container">
-          <input type="text" placeholder="Search" />
-          <button id="search"><img src="./Assests/search.png" alt="search icon" id="BTNicon"></button>
-          <button id="favorite"><img src="./Assests/star.png" alt="" id="BTNicon"></button>
+          <input type="text" placeholder="Search" id="searchbox" />
+          <button id="searchBTN">
+            <img src="./Assests/search.png" alt="search icon" id="BTNicon" />
+          </button>
+          <button id="favorite">
+            <img src="./Assests/star.png" alt="" id="BTNicon" />
+          </button>
         </div>
         <div class="right-side-txt-contaier">
           <div class="weather-Details">
@@ -55,7 +59,7 @@
             </div>
             <div class="high-container">
               <h4>High</h4>
-              <h4>64°</h4>
+              <h4 id="high-Temp">64°</h4>
               <img
                 src="./Assests/thermometer.png"
                 class="thermometer-icon"
@@ -64,7 +68,7 @@
             </div>
             <div class="Low-container">
               <h4>Low</h4>
-              <h4>24°</h4>
+              <h4 id="low-Temp">24°</h4>
               <img
                 src="./Assests/thermometer.png"
                 class="thermometer-icon"
@@ -78,38 +82,28 @@
           </div>
           <div class="Week-Text-Container">
             <div class="days">
-              <h4>Monday</h4>
-              <h4>67°</h4>
+              <h4 id="day1"></h4>
+              <h4 id="day1-temp">67°</h4>
               <h4>F°</h4>
             </div>
             <div class="days">
-              <h4>Tuesday</h4>
-              <h4>67°</h4>
+              <h4 id="day2">Tuesday</h4>
+              <h4 id="day2-temp">67°</h4>
               <h4>F°</h4>
             </div>
             <div class="days">
-              <h4>Wensday</h4>
-              <h4>67°</h4>
+              <h4 id="day3">Wensday</h4>
+              <h4 id="day3-temp">67°</h4>
               <h4>F°</h4>
             </div>
             <div class="days">
-              <h4>Thursday</h4>
-              <h4>67°</h4>
+              <h4 id="day4">Thursday</h4>
+              <h4 id="day4-temp">67°</h4>
               <h4>F°</h4>
             </div>
             <div class="days">
-              <h4>Friday</h4>
-              <h4>67°</h4>
-              <h4>F°</h4>
-            </div>
-            <div class="days">
-              <h4>Saturday</h4>
-              <h4>67°</h4>
-              <h4>F°</h4>
-            </div>
-            <div class="days">
-              <h4>Sunday</h4>
-              <h4>67°</h4>
+              <h4 id="day5">Friday</h4>
+              <h4 id="day5-temp">67°</h4>
               <h4>F°</h4>
             </div>
           </div>
