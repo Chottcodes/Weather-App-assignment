@@ -1,4 +1,4 @@
-import { apikey } from "../scripts/enviroment.js";
+import { apikey } from "./Environment.js";
 
 let searchBTN = document.getElementById("searchBTN"),
   searchbox = document.getElementById("searchbox"),
