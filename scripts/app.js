@@ -35,7 +35,6 @@ async function Currentweather() {
   cityName.innerText = `${data.name}`;
   hightempTxt.innerText = `${data.main.temp_max}°F`;
   lowtempTxt.innerText = `${data.main.temp_min}°F`;
-  searchbox = "";
 }
 async function fiveDayFetch() {
   searchinput = searchbox.value.trim();
@@ -65,4 +64,5 @@ async function fiveDayFetch() {
     let counter = i * 8;
     fivedaytemp[i].innerText = dataTwo.list[counter].main.temp;
   }
+  searchinput = "";
 }

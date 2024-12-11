@@ -121,6 +121,11 @@
     width: 20px;
 
 }
+.Week-Text-Container{
+    display: grid;
+    grid-template-rows:repeat(5,1fr) ;
+    grid-template-columns: 1fr 1fr 1fr;
+}
 .weather-Details{
     width: 100%;
 }
