@@ -19,8 +19,14 @@ let searchBTN = document.getElementById("searchBTN"),
   hazecloudsicon = document.getElementById("weather-icon-haze"),
   cloudyicon = document.getElementById("weather-icon-clouds"),
   moonicon = document.getElementById("weather-icon-moon"),
-  rainicon = document.getElementById("weather-icon-rain");
-let icons = [hazecloudsicon, cloudyicon, moonicon, rainicon];
+  rainicon = document.getElementById("weather-icon-rain"),
+  snowflakesicon = document.getElementById("weather-icon-snowflake"),
+  sunriseicon = document.getElementById("weather-icon-morning"),
+  nighticon = document.getElementById("weather-icon-night-clouds"),
+  thundericon=document.getElementById("weather-icon-thunder"),
+  sunicon=document.getElementById("weather-icon-sun");
+  
+let icons = [hazecloudsicon, cloudyicon, moonicon, rainicon,snowflakesicon,sunriseicon,nighticon,thundericon,sunicon];
 let searchinput = "";
 
 // navigator.geolocation.getCurrentPosition(success);
@@ -89,7 +95,6 @@ async function Currentweather() {
   hightempTxt.innerText = `${data.main.temp_max}°F`;
   lowtempTxt.innerText = `${data.main.temp_min}°F`;
   if (data.weather[0].description.toLowerCase().includes("haze")) {
-    console.log(data.weather[0].description);
     for (let i = 0; i < icons.length; i++) {
       if (icons[i].id === "weather-icon-haze") {
         icons[i].style.display = "block";
@@ -97,7 +102,43 @@ async function Currentweather() {
         icons[i].style.display = "none";
       }
     }
-  }
+  }if(data.weather[0].description.toLowerCase().includes("snow")){
+      for (let i = 0; i < icons.length; i++) {
+          if (icons[i].id === "weather-icon-snowflake") {
+              icons[i].style.display = "block";
+            } else {
+                icons[i].style.display = "none";
+            }
+        }
+    }
+    if(data.weather[0].description.toLowerCase().includes("rain") ||data.weather[0].description.toLowerCase().includes("drizzle") ){
+        for (let i = 0; i < icons.length; i++) {
+            if (icons[i].id === "weather-icon-rain") {
+                icons[i].style.display = "block";
+              } else {
+                  icons[i].style.display = "none";
+              }
+          }
+      }
+      if(data.weather[0].description.toLowerCase().includes("thunder")){
+        for (let i = 0; i < icons.length; i++) {
+            if (icons[i].id === "weather-icon-thunder") {
+                icons[i].style.display = "block";
+              } else {
+                  icons[i].style.display = "none";
+              }
+          }
+      }
+      if(data.weather[0].description.toLowerCase().includes("clear sky") ||data.weather[0].description.toLowerCase().includes("sunny")||data.weather[0].description.toLowerCase() === "few clouds" ){
+        for (let i = 0; i < icons.length; i++) {
+            if (icons[i].id === "weather-icon-sun") {
+                icons[i].style.display = "block";
+              } else {
+                  icons[i].style.display = "none";
+              }
+          }
+      }
+    
 }
 async function fiveDayFetch() {
   searchinput = searchbox.value.trim();
