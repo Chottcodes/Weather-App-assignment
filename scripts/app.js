@@ -18,58 +18,58 @@ let searchBTN = document.getElementById("searchBTN"),
   day5temp = document.getElementById("day5-temp");
 let searchinput = "";
 
-// navigator.geolocation.getCurrentPosition(success);
-// function success(position){
-//     const { latitude, longitude } = position.coords;
-//     CurrentWeatherByLocation(latitude, longitude);
-//     FiveDayFetchByLocation(latitude, longitude);
+navigator.geolocation.getCurrentPosition(success);
+function success(position){
+    const { latitude, longitude } = position.coords;
+    CurrentWeatherByLocation(latitude, longitude);
+    FiveDayFetchByLocation(latitude, longitude);
     
-// }
-// async function CurrentWeatherByLocation(lat, lon) {
-//   const response = await fetch(
-//     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
-//   );
+}
+async function CurrentWeatherByLocation(lat, lon) {
+  const response = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
+  );
 
-//   const data = await response.json();
-//   currentTXT.innerText = `${data.main.temp}°F`;
-//   cityName.innerText = `${data.name}`;
-//   hightempTxt.innerText = `${data.main.temp_max}°F`;
-//   lowtempTxt.innerText = `${data.main.temp_min}°F`;
-// }
+  const data = await response.json();
+  currentTXT.innerText = `${data.main.temp}°F`;
+  cityName.innerText = `${data.name}`;
+  hightempTxt.innerText = `${data.main.temp_max}°F`;
+  lowtempTxt.innerText = `${data.main.temp_min}°F`;
+}
 
 
-// async function FiveDayFetchByLocation(lat, lon) {
-//   const response = await fetch(
-//     `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
-//   );
+async function FiveDayFetchByLocation(lat, lon) {
+  const response = await fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
+  );
 
-//   const dataTwo = await response.json();
-//   let differentdays = [day1, day2, day3, day4, day5];
-//   let daynamearr = [
-//     "Sunday",
-//     "Monday",
-//     "Tuesday",
-//     "Wednesday",
-//     "Thursday",
-//     "Friday",
-//     "Saturday",
-//   ];
-
-  
-//   for (let i = 0; i < 5; i++) {
-//     let index = i * 8;
-//     let dayname = new Date(dataTwo.list[index].dt_txt);
-//     let day = dayname.getDay();
-//     differentdays[i].innerText = daynamearr[day];
-//   }
+  const dataTwo = await response.json();
+  let differentdays = [day1, day2, day3, day4, day5];
+  let daynamearr = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   
-//   let fivedaytemp = [day1temp, day2temp, day3temp, day4temp, day5temp];
-//   for (let i = 0; i < 5; i++) {
-//     let index = i * 8;
-//     fivedaytemp[i].innerText = `${dataTwo.list[index].main.temp}°F`;
-//   }
-// }
+  for (let i = 0; i < 5; i++) {
+    let index = i * 8;
+    let dayname = new Date(dataTwo.list[index].dt_txt);
+    let day = dayname.getDay();
+    differentdays[i].innerText = daynamearr[day];
+  }
+
+  
+  let fivedaytemp = [day1temp, day2temp, day3temp, day4temp, day5temp];
+  for (let i = 0; i < 5; i++) {
+    let index = i * 8;
+    fivedaytemp[i].innerText = `${dataTwo.list[index].main.temp}°F`;
+  }
+}
 searchBTN.addEventListener("click", function () {
   Currentweather();
   fiveDayFetch();
@@ -94,7 +94,6 @@ async function fiveDayFetch() {
     `https://api.openweathermap.org/data/2.5/forecast?q=${searchinput}&appid=${apikey}&units=imperial`
   );
   const dataTwo = await newreponse.json();
-  searchbox = "";
   let differentdays = [day1, day2, day3, day4, day5];
   let daynamearr = [
     "Sunday",
@@ -114,7 +113,7 @@ async function fiveDayFetch() {
   let fivedaytemp = [day1temp, day2temp, day3temp, day4temp, day5temp];
   for (let i = 0; i < 5; i++) {
     let counter = i * 8;
-    fivedaytemp[i].innerText = dataTwo.list[counter].main.temp;
+    fivedaytemp[i].innerText = dataTwo.list[counter].main.temp+"°"; 
   }
-  searchinput = "";
+  searchbox.value = "";
 }
