@@ -28,7 +28,9 @@ let searchBTN = document.getElementById("searchBTN"),
   nightbg = document.getElementById("night-bg"),
   sunnybg = document.getElementById("sunny-trees-bg"),
   rainybg = document.getElementById("rainy-day"),
-  parentbgcolor = document.getElementById("main-bg-color");
+  parentbgcolor = document.getElementById("main-bg-color"),
+  star1 = document.getElementById("star1"),
+  star2yellow = document.getElementById("star2-yellow");
 
 let icons = [
   hazecloudsicon,
@@ -225,4 +227,15 @@ async function fiveDayFetch() {
     fivedaytemp[i].innerText = dataTwo.list[counter].main.temp + "°";
   }
   searchbox.value = "";
+}
+
+star1.addEventListener("click", changstaricon);
+star2yellow.addEventListener("click",yellowicon);
+function changstaricon() {
+  star1.style.display = "none";
+  star2yellow.style.display = "block";
+}
+function yellowicon() {
+  star1.style.display = "block";
+  star2yellow.style.display = "none";
 }

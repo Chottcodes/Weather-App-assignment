@@ -142,8 +142,24 @@
 .city-container{
     width: 100%;
     display: flex;
+    align-items: center;
     justify-content: end;
-    
+}
+#star1{
+    height: 17px;
+    width: 17px;
+    margin-right: 10px;
+    filter: invert(100%);
+    display: block;
+    cursor: pointer;
+}
+
+#star2-yellow{
+    height: 17px;
+    width: 17px;
+    margin-right: 10px;
+    display: none;
+    cursor: pointer;
 }
 #City-name{
     font-size: 60px;
