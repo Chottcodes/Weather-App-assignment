@@ -16,84 +16,104 @@ let searchBTN = document.getElementById("searchBTN"),
   day3temp = document.getElementById("day3-temp"),
   day4temp = document.getElementById("day4-temp"),
   day5temp = document.getElementById("day5-temp"),
-  hazecloudsicon = document.getElementById("weather-icon-haze"),
-  cloudyicon = document.getElementById("weather-icon-clouds"),
-  moonicon = document.getElementById("weather-icon-moon"),
-  rainicon = document.getElementById("weather-icon-rain"),
-  snowflakesicon = document.getElementById("weather-icon-snowflake"),
-  sunriseicon = document.getElementById("weather-icon-morning"),
-  nighticon = document.getElementById("weather-icon-night-clouds"),
-  thundericon = document.getElementById("weather-icon-thunder"),
-  sunicon = document.getElementById("weather-icon-sun"),
-  nightbg = document.getElementById("night-bg"),
-  sunnybg = document.getElementById("sunny-trees-bg"),
-  rainybg = document.getElementById("rainy-day"),
+  weatherIcon = document.getElementById("weather-icons"),
+  mainbg = document.getElementById("background"),
   parentbgcolor = document.getElementById("main-bg-color"),
   star1 = document.getElementById("star1"),
   star2yellow = document.getElementById("star2-yellow"),
   favorite = document.getElementById("favorite");
-
-let icons = [
-  hazecloudsicon,
-  cloudyicon,
-  moonicon,
-  rainicon,
-  snowflakesicon,
-  sunriseicon,
-  nighticon,
-  thundericon,
-  sunicon,
-];
 let searchinput = "";
 
-// navigator.geolocation.getCurrentPosition(success);
-// function success(position) {
-//   const { latitude, longitude } = position.coords;
-//   CurrentWeatherByLocation(latitude, longitude);
-//   FiveDayFetchByLocation(latitude, longitude);
-// }
-// async function CurrentWeatherByLocation(lat, lon) {
-//   const response = await fetch(
-//     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
-//   );
+navigator.geolocation.getCurrentPosition(success);
 
-//   const data = await response.json();
-//   currentTXT.innerText = `${data.main.temp}°F`;
-//   cityName.innerText = `${data.name}`;
-//   hightempTxt.innerText = `${data.main.temp_max}°F`;
-//   lowtempTxt.innerText = `${data.main.temp_min}°F`;
-// }
+function success(position) {
+  const { latitude, longitude } = position.coords;
+  CurrentWeatherByLocation(latitude, longitude);
+  FiveDayFetchByLocation(latitude, longitude);
+}
+async function CurrentWeatherByLocation(lat, lon) {
+  const response = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
+  );
 
-// async function FiveDayFetchByLocation(lat, lon) {
-//   const response = await fetch(
-//     `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
-//   );
+  const data = await response.json();
+  currentTXT.innerText = `${Math.round(data.main.temp)}°F`;
+  cityName.innerText = `${data.name}`;
+  hightempTxt.innerText = `${Math.round(data.main.temp_max)}°F`;
+  lowtempTxt.innerText = `${Math.round(data.main.temp_min)}°F`;
+  let weatherDescription = data.weather[0].description.toLowerCase();
+  let datetime = data.dt;
+  let sunrisetime = data.sys.sunrise;
+  let sunset = data.sys.sunset;
 
-//   const dataTwo = await response.json();
-//   let differentdays = [day1, day2, day3, day4, day5];
-//   let daynamearr = [
-//     "Sunday",
-//     "Monday",
-//     "Tuesday",
-//     "Wednesday",
-//     "Thursday",
-//     "Friday",
-//     "Saturday",
-//   ];
+  switch (true) {
+    case weatherDescription.includes("haze"):
+      weatherIcon.src = "Assests/haze.png";
+      break;
+    case weatherDescription.includes("snow"):
+      weatherIcon.src = "Assests/snowflake.png";
+      mainbg.src = "Assests/snowbg.jpg";
+      break;
+    case weatherDescription.includes("rain") ||
+      weatherDescription.includes("drizzle"):
+      weatherIcon.src = "Assests/heavy-rain.png";
+      mainbg.src = "Assests/rainybg.jpg";
+      parentbgcolor.style.backgroundColor = "#0F1014";
+      break;
+    case weatherDescription.includes("thunder"):
+      weatherIcon.src = "Assests/thunder.png";
+      mainbg.src = "Assests/thunderbg.jpg";
+      parentbgcolor.style.backgroundColor = "#0F1014";
+      break;
+    case weatherDescription.includes("clear sky") ||
+      weatherDescription.includes("sunny") ||
+      weatherDescription === "few clouds":
+      weatherIcon.src = "Assests/sun.png";
+      mainbg.src = "Assests/sunnybg.jpg";
+      parentbgcolor.style.backgroundColor = "#0B200C";
+      break;
+    case weatherDescription.includes("clouds") ||
+      weatherDescription.includes("mist"):
+      weatherIcon.src = "Assests/cloud.png";
+      mainbg.src = "Assests/rainybg.jpg";
+      parentbgcolor.style.backgroundColor = "#0F1014";
+      break;
+    default:
+      break;
+  }
 
-//   for (let i = 0; i < 5; i++) {
-//     let index = i * 8;
-//     let dayname = new Date(dataTwo.list[index].dt_txt);
-//     let day = dayname.getDay();
-//     differentdays[i].innerText = daynamearr[day];
-//   }
+  if (datetime < sunrisetime) {
+    console.log("Night time");
+    weatherIcon.src = "Assests/full-moon.png";
+    mainbg.src = "Assests/nightbg.jpg";
+    parentbgcolor.style.backgroundColor = "#172433";
+  } else if (datetime > sunrisetime && datetime < sunset) {
+    console.log("Day time");
+  }
+}
 
-//   let fivedaytemp = [day1temp, day2temp, day3temp, day4temp, day5temp];
-//   for (let i = 0; i < 5; i++) {
-//     let index = i * 8;
-//     fivedaytemp[i].innerText = `${dataTwo.list[index].main.temp}°F`;
-//   }
-// }
+async function FiveDayFetchByLocation(lat, lon) {
+  const response = await fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
+  );
+
+  const dataTwo = await response.json();
+  let differentdays = [day1, day2, day3, day4, day5];
+  let daynamearr = [
+    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+  ];
+  for (let i = 0; i < 5; i++) {
+    let index = i * 8;
+    let dayname = new Date(dataTwo.list[index].dt_txt);
+    let day = dayname.getDay();
+    differentdays[i].innerText = daynamearr[day];
+  }
+  let fivedaytemp = [day1temp, day2temp, day3temp, day4temp, day5temp];
+  for (let i = 0; i < 5; i++) {
+    let counter = i * 8;
+    fivedaytemp[i].innerText = Math.round(dataTwo.list[counter].main.temp) + "°";
+  }
+}
 searchBTN.addEventListener("click", function () {
   Currentweather();
   fiveDayFetch();
@@ -107,95 +127,65 @@ async function Currentweather() {
   );
 
   const data = await response.json();
-  currentTXT.innerText = `${data.main.temp}°F`;
+  currentTXT.innerText = `${Math.round(data.main.temp)}°F`;
   cityName.innerText = `${data.name}`;
-  hightempTxt.innerText = `${data.main.temp_max}°F`;
-  lowtempTxt.innerText = `${data.main.temp_min}°F`;
-  if (data.weather[0].description.toLowerCase().includes("haze")) {
-    for (let i = 0; i < icons.length; i++) {
-      if (icons[i].id === "weather-icon-haze") {
-        icons[i].style.display = "block";
-      } else {
-        icons[i].style.display = "none";
-      }
-    }
+  hightempTxt.innerText = `${Math.round(data.main.temp_max)}°F`;
+  lowtempTxt.innerText = `${Math.round(data.main.temp_min)}°F`;
+  let weatherDescription = data.weather[0].description.toLowerCase();
+  let datetime = data.dt;
+  let sunrisetime = data.sys.sunrise;
+  let sunset = data.sys.sunset;
+
+  switch (true) {
+    case weatherDescription.includes("haze"):
+      weatherIcon.src = "Assests/haze.png";
+      break;
+
+    case weatherDescription.includes("snow"):
+      weatherIcon.src = "Assests/snowflake.png";
+      mainbg.src = "Assests/snowbg.jpg";
+      break;
+
+    case weatherDescription.includes("rain") ||
+      weatherDescription.includes("drizzle"):
+      weatherIcon.src = "Assests/heavy-rain.png";
+      mainbg.src = "Assests/rainybg.jpg";
+      parentbgcolor.style.backgroundColor = "#0F1014";
+      break;
+
+    case weatherDescription.includes("thunder"):
+      weatherIcon.src = "Assests/thunder.png";
+      weatherIcon.src = "Assests/sun.png";
+      mainbg.src = "Assests/thunderbg.jpg";
+      parentbgcolor.style.backgroundColor = "#0F1014";
+
+      break;
+
+    case weatherDescription.includes("clear sky") ||
+      weatherDescription.includes("sunny") ||
+      weatherDescription === "few clouds":
+      weatherIcon.src = "Assests/sun.png";
+      mainbg.src = "Assests/sunnybg.jpg";
+      parentbgcolor.style.backgroundColor = "#0B200C";
+      break;
+
+    case weatherDescription.includes("clouds") ||
+      weatherDescription.includes("mist"):
+      weatherIcon.src = "Assests/cloud.png";
+      mainbg.src = "Assests/rainybg.jpg";
+      parentbgcolor.style.backgroundColor = "#0F1014";
+      break;
+
+    default:
+      break;
   }
-  if (data.weather[0].description.toLowerCase().includes("snow")) {
-    for (let i = 0; i < icons.length; i++) {
-      if (icons[i].id === "weather-icon-snowflake") {
-        icons[i].style.display = "block";
-      } else {
-        icons[i].style.display = "none";
-      }
-    }
-  }
-  if (
-    data.weather[0].description.toLowerCase().includes("rain") ||
-    data.weather[0].description.toLowerCase().includes("drizzle")
-  ) {
-    for (let i = 0; i < icons.length; i++) {
-      if (icons[i].id === "weather-icon-rain") {
-        icons[i].style.display = "block";
-      } else {
-        icons[i].style.display = "none";
-      }
-    }
-    rainybg.style.display = "block";
-    parentbgcolor.style.backgroundColor = "#0F1014";
-    nightbg.style.display = "none";
-    sunnybg.style.display = "none";
-  }
-  if (data.weather[0].description.toLowerCase().includes("thunder")) {
-    for (let i = 0; i < icons.length; i++) {
-      if (icons[i].id === "weather-icon-thunder") {
-        icons[i].style.display = "block";
-      } else {
-        icons[i].style.display = "none";
-      }
-    }
-    rainybg.style.display = "block";
-    parentbgcolor.style.backgroundColor = "#0F1014";
-    nightbg.style.display = "none";
-    sunnybg.style.display = "none";
-  }
-  if (
-    data.weather[0].description.toLowerCase().includes("clear sky") ||
-    data.weather[0].description.toLowerCase().includes("sunny") ||
-    data.weather[0].description.toLowerCase() === "few clouds"
-  ) {
-    for (let i = 0; i < icons.length; i++) {
-      if (icons[i].id === "weather-icon-sun") {
-        icons[i].style.display = "block";
-      } else {
-        icons[i].style.display = "none";
-      }
-    }
-    rainybg.style.display = "none";
-    parentbgcolor.style.backgroundColor = "#0B200C";
-    nightbg.style.display = "none";
-    sunnybg.style.display = "block";
-  }
-  if (data.weather[0].description.toLowerCase().includes("clouds")) {
-    for (let i = 0; i < icons.length; i++) {
-      if (icons[i].id === "weather-icon-clouds") {
-        icons[i].style.display = "block";
-      } else {
-        icons[i].style.display = "none";
-      }
-    }
-    rainybg.style.display = "block";
-    parentbgcolor.style.backgroundColor = "#0F1014";
-    nightbg.style.display = "none";
-    sunnybg.style.display = "none";
-  }
-  if (data.dt < data.sys.sunrise) {
+
+  if (datetime < sunrisetime) {
     console.log("Night time");
-    nightbg.style.display = "block";
+    weatherIcon.src = "Assests/full-moon.png";
+    mainbg.src = "Assests/nightbg.jpg";
     parentbgcolor.style.backgroundColor = "#172433";
-    sunnybg.style.display = "none";
-    rainybg.style.display = "none";
-  }
-  if (data.dt > data.sys.sunrise && data.dt < data.sys.sunset) {
+  } else if (datetime > sunrisetime && datetime < sunset) {
     console.log("Day time");
   }
 }
@@ -225,7 +215,9 @@ async function fiveDayFetch() {
   let fivedaytemp = [day1temp, day2temp, day3temp, day4temp, day5temp];
   for (let i = 0; i < 5; i++) {
     let counter = i * 8;
-    fivedaytemp[i].innerText = dataTwo.list[counter].main.temp + "°";
+
+    fivedaytemp[i].innerText =
+      Math.round(dataTwo.list[counter].main.temp) + "°";
   }
   searchbox.value = "";
 }
@@ -239,4 +231,3 @@ function yellowicon() {
   star1.style.display = "block";
   star2yellow.style.display = "none";
 }
-favorite.addEventListener('click',);
