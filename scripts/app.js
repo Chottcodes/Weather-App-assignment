@@ -30,7 +30,8 @@ let searchBTN = document.getElementById("searchBTN"),
   rainybg = document.getElementById("rainy-day"),
   parentbgcolor = document.getElementById("main-bg-color"),
   star1 = document.getElementById("star1"),
-  star2yellow = document.getElementById("star2-yellow");
+  star2yellow = document.getElementById("star2-yellow"),
+  favorite = document.getElementById("favorite");
 
 let icons = [
   hazecloudsicon,
@@ -228,9 +229,8 @@ async function fiveDayFetch() {
   }
   searchbox.value = "";
 }
-
 star1.addEventListener("click", changstaricon);
-star2yellow.addEventListener("click",yellowicon);
+star2yellow.addEventListener("click", yellowicon);
 function changstaricon() {
   star1.style.display = "none";
   star2yellow.style.display = "block";
@@ -239,3 +239,4 @@ function yellowicon() {
   star1.style.display = "block";
   star2yellow.style.display = "none";
 }
+favorite.addEventListener('click',);

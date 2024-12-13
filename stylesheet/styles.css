@@ -176,7 +176,17 @@
   background-color:#FFFFFF03;
   backdrop-filter: blur(5px);
   border-radius: 15px;
+  display: none;
   margin: auto;
+}
+.right-side-txt-contaier-2{
+    width: 80%;
+    height: 83%;
+    background-color:#FFFFFF03;
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    display: block;
+    margin: auto;
 }
 .input-container {
   height: 10%;
