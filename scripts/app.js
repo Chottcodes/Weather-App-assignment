@@ -19,10 +19,36 @@ let searchBTN = document.getElementById("searchBTN"),
   weatherIcon = document.getElementById("weather-icons"),
   mainbg = document.getElementById("background"),
   parentbgcolor = document.getElementById("main-bg-color"),
-  star1 = document.getElementById("star1"),
+  star1clear = document.getElementById("star1-clear"),
   star2yellow = document.getElementById("star2-yellow"),
-  favorite = document.getElementById("favorite");
+  favorite = document.getElementById("favorite"),
+  favoritelist = document.getElementById("favorite-list"),
+  cancelitemicon = document.getElementById("cancel-item-icon"),
+  favoriteswindowcloseBTN = document.getElementById("cancelBTN"),
+  escapecontainer = document.getElementById("e-container"),
+  inputcontainer = document.getElementById("input-div"),
+  rightcontainer1 = document.getElementById("right-container-1"),
+  rightcontainer2 = document.getElementById("right-container-2");
+  const originalDisplay = getComputedStyle(inputcontainer).display;
+  const originalDisplay1 = getComputedStyle(escapecontainer).display;
 let searchinput = "";
+
+favoriteswindowcloseBTN.addEventListener("click", function () {
+  escapecontainer.style.display = "none";
+  if(inputcontainer.style.display ="none"){
+    inputcontainer.style.display = originalDisplay;
+  }else{
+    inputcontainer.style.display ="none";
+  }
+  rightcontainer1.style.display="block";
+  rightcontainer2.style.display="none"
+});
+favorite.addEventListener("click",function (){
+    rightcontainer1.style.display="none";
+    inputcontainer.style.display="none";
+    rightcontainer2.style.display="block";
+    escapecontainer.style.display = "block";
+})
 
 navigator.geolocation.getCurrentPosition(success);
 
@@ -100,7 +126,13 @@ async function FiveDayFetchByLocation(lat, lon) {
   const dataTwo = await response.json();
   let differentdays = [day1, day2, day3, day4, day5];
   let daynamearr = [
-    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
   ];
   for (let i = 0; i < 5; i++) {
     let index = i * 8;
@@ -111,7 +143,8 @@ async function FiveDayFetchByLocation(lat, lon) {
   let fivedaytemp = [day1temp, day2temp, day3temp, day4temp, day5temp];
   for (let i = 0; i < 5; i++) {
     let counter = i * 8;
-    fivedaytemp[i].innerText = Math.round(dataTwo.list[counter].main.temp) + "°";
+    fivedaytemp[i].innerText =
+      Math.round(dataTwo.list[counter].main.temp) + "°";
   }
 }
 searchBTN.addEventListener("click", function () {
@@ -221,13 +254,80 @@ async function fiveDayFetch() {
   }
   searchbox.value = "";
 }
-star1.addEventListener("click", changstaricon);
+
+star1clear.addEventListener("click", changstaricon);
 star2yellow.addEventListener("click", yellowicon);
+
 function changstaricon() {
-  star1.style.display = "none";
+  let listcontent = document.createElement("li");
+  let image = document.createElement("img");
+  let city = cityName.innerText.trim();
+  star1clear.style.display = "none";
   star2yellow.style.display = "block";
+  image.src = "/Assests/cancel.png";
+  image.alt = "Cancel icon";
+  image.id = "cancel-item-icon";
+  listcontent.innerText = city;
+  listcontent.appendChild(image);
+
+  favoritelist.appendChild(listcontent);
+
+  addToLocalStorage(city);
+
+  image.addEventListener("click", function () {
+    removeitem(city);
+    listcontent.remove();
+  });
 }
+
 function yellowicon() {
-  star1.style.display = "block";
+  star1clear.style.display = "block";
   star2yellow.style.display = "none";
 }
+
+function addToLocalStorage(city) {
+  let localfav = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  if (!localfav.includes(city)) {
+    localfav.push(city);
+  }
+  localStorage.setItem("favorites", JSON.stringify(localfav));
+}
+
+function loadFavorites() {
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  favorites.forEach((city) => {
+    let listcontent = document.createElement("li");
+    let image = document.createElement("img");
+
+    image.src = "/Assests/cancel.png";
+    image.alt = "Cancel icon";
+
+    listcontent.innerText = city;
+    listcontent.appendChild(image);
+
+    image.addEventListener("click", function () {
+      removeitem(city);
+      listcontent.remove();
+    });
+
+    favoritelist.appendChild(listcontent);
+  });
+}
+
+function removeitem(city) {
+  let localfav = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  let nameIndex = localfav.indexOf(city);
+
+  if (nameIndex !== -1) {
+    localfav.splice(nameIndex, 1);
+  }
+
+  localStorage.setItem("favorites", JSON.stringify(localfav));
+}
+
+window.onload = function () {
+  loadFavorites();
+};
