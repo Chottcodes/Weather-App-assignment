@@ -29,26 +29,26 @@ let searchBTN = document.getElementById("searchBTN"),
   inputcontainer = document.getElementById("input-div"),
   rightcontainer1 = document.getElementById("right-container-1"),
   rightcontainer2 = document.getElementById("right-container-2");
-  const originalDisplay = getComputedStyle(inputcontainer).display;
-  const originalDisplay1 = getComputedStyle(escapecontainer).display;
+const originalDisplay = getComputedStyle(inputcontainer).display;
+const originalDisplay1 = getComputedStyle(escapecontainer).display;
 let searchinput = "";
 
 favoriteswindowcloseBTN.addEventListener("click", function () {
   escapecontainer.style.display = "none";
-  if(inputcontainer.style.display ="none"){
+  if ((inputcontainer.style.display = "none")) {
     inputcontainer.style.display = originalDisplay;
-  }else{
-    inputcontainer.style.display ="none";
+  } else {
+    inputcontainer.style.display = "none";
   }
-  rightcontainer1.style.display="block";
-  rightcontainer2.style.display="none"
+  rightcontainer1.style.display = "block";
+  rightcontainer2.style.display = "none";
 });
-favorite.addEventListener("click",function (){
-    rightcontainer1.style.display="none";
-    inputcontainer.style.display="none";
-    rightcontainer2.style.display="block";
-    escapecontainer.style.display = "block";
-})
+favorite.addEventListener("click", function () {
+  rightcontainer1.style.display = "none";
+  inputcontainer.style.display = "none";
+  rightcontainer2.style.display = "block";
+  escapecontainer.style.display = "block";
+});
 
 navigator.geolocation.getCurrentPosition(success);
 
@@ -299,6 +299,8 @@ function addToLocalStorage(city) {
 function loadFavorites() {
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
+  favoritelist.innerHTML = "";
+
   favorites.forEach((city) => {
     let listcontent = document.createElement("li");
     let image = document.createElement("img");
@@ -308,6 +310,12 @@ function loadFavorites() {
 
     listcontent.innerText = city;
     listcontent.appendChild(image);
+
+    listcontent.addEventListener("click", function () {
+      searchbox.value = city;
+      Currentweather();
+      fiveDayFetch();
+    });
 
     image.addEventListener("click", function () {
       removeitem(city);
@@ -332,4 +340,9 @@ function removeitem(city) {
 
 window.onload = function () {
   loadFavorites();
+  const lastSearchedCity = localStorage.getItem("lastSearchedCity");
+  if (lastSearchedCity) {
+    searchbox.value = lastSearchedCity;
+    Currentweather();
+  }
 };
