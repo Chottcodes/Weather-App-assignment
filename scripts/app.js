@@ -159,6 +159,8 @@ async function Currentweather() {
     `https://api.openweathermap.org/data/2.5/weather?q=${searchinput}&appid=${apikey}&units=imperial`
   );
 
+  localStorage.setItem("lastSearchedCity", searchinput);
+
   const data = await response.json();
   currentTXT.innerText = `${Math.round(data.main.temp)}°F`;
   cityName.innerText = `${data.name}`;
