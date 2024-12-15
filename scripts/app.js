@@ -215,7 +215,7 @@ async function Currentweather() {
       break;
   }
 
-  if (datetime < sunrisetime) {
+  if (datetime > sunset) {
     console.log("Night time");
     weatherIcon.src = "Assests/full-moon.png";
     mainbg.src = "Assests/nightbg.jpg";
